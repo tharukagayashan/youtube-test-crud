@@ -4,8 +4,10 @@ import com.project.dao.StudentDao;
 import com.project.dto.StudentCreateReqDto;
 import com.project.dto.StudentResDto;
 import com.project.model.Student;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -108,5 +110,34 @@ public class StudentService {
             }
         }
 
+    }
+
+    public ResponseEntity<List<StudentResDto>> searchStudent(String search) {
+        if (search.isEmpty()) {
+            throw new RuntimeException("Search value required");
+        } else {
+            List<StudentResDto> responseList = new ArrayList<>();
+            List<Student> studentList = studentDao.findBySearchValue(search.toLowerCase());
+            for (Student s : studentList) {
+                responseList.add(s.toDto());
+            }
+
+            return ResponseEntity.ok(responseList);
+        }
+    }
+
+    public ResponseEntity<List<StudentResDto>> getStudentDataWithPagination(Integer page, Integer per_page, String search, String direction, String sort) {
+        Page<Student> data;
+        if (direction.equalsIgnoreCase("asc")) {
+            data = studentDao.findStudentDataWithPagination(search, PageRequest.of(page, per_page, Sort.by(Sort.Direction.ASC, sort)));
+        } else {
+            data = studentDao.findStudentDataWithPagination(search, PageRequest.of(page, per_page, Sort.by(Sort.Direction.DESC, sort)));
+        }
+        List<Student> studentList = data.getContent();
+        List<StudentResDto> responseList = new ArrayList<>();
+        for (Student s : studentList) {
+            responseList.add(s.toDto());
+        }
+        return ResponseEntity.ok(responseList);
     }
 }

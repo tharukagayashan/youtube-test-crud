@@ -53,4 +53,20 @@ public class StudentController {
         return studentService.deleteStudent(studentId);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<StudentResDto>> searchStudent(@RequestParam(value = "search",defaultValue = "") String search){
+        return studentService.searchStudent(search);
+    }
+
+    @GetMapping("/table")
+    public ResponseEntity<List<StudentResDto>> getStudentDataWithPagination(
+            @RequestParam(defaultValue = "0", required = false) Integer page,
+            @RequestParam(defaultValue = "5", required = false) Integer per_page,
+            @RequestParam(defaultValue = "", required = false) String search,
+            @RequestParam(defaultValue = "asc", required = false) String direction,
+            @RequestParam(defaultValue = "studentId", required = false) String sort
+    ){
+        return studentService.getStudentDataWithPagination(page, per_page,search,direction,sort);
+    }
+
 }

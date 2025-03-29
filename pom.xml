@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.project</groupId>
-	<artifactId>youtube-test-crud</artifactId>
+	<artifactId>test-crud</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>youtube-test-crud</name>
+	<name>test-crud</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
